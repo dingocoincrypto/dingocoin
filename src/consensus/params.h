@@ -77,11 +77,9 @@ struct Params {
 
     /** Auxpow parameters */
     int32_t nAuxpowChainId;
+    int32_t nAuxpowChainIdNew;
     bool fStrictChainId;
     bool fAllowLegacyBlocks;
-
-    /** AuxPow ChainId Change */
-    // int nChainIdChangeHeight; // ToDo
 
     /** Height-aware consensus parameters */
     uint32_t nHeightEffective; // When these parameters come into use
