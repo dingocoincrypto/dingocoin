@@ -70,7 +70,7 @@ class CMainParams : public CChainParams {
 private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
-    Consensus::Params aux2Consensus;
+
 public:
     CMainParams() {
         strNetworkID = "main";
@@ -118,16 +118,11 @@ public:
 
         // AuxPoW parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
+        consensus.nAuxpowChainIdNew = 0x0032;
+        consensus.nAuxpowChainIdRetargetHeight = INT_MAX;
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPoW2
-        aux2Consensus = consensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0077; // New chain id to enable merge mining alongside Dogecoin
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
-        aux2Consensus.nHeightEffective = INT_MAX;
 
         // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
@@ -222,7 +217,7 @@ private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
     Consensus::Params minDifficultyConsensus;
-    Consensus::Params aux2Consensus;
+
 public:
     CTestNetParams() {
         strNetworkID = "test";
@@ -272,16 +267,11 @@ public:
 
         // AuxPoW parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
+        consensus.nAuxpowChainIdNew = 0x0032;
+        consensus.nAuxpowChainIdRetargetHeight = 50;
         consensus.fStrictChainId = true;
         consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
-
-        // AuxPoW2
-        aux2Consensus = consensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0077; // New chain id to enable merge mining alongside Dogecoin
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
-        aux2Consensus.nHeightEffective = 210;
 
         // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
         digishieldConsensus = consensus;
@@ -369,7 +359,7 @@ class CRegTestParams : public CChainParams {
 private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
-    Consensus::Params aux2Consensus;
+
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
@@ -407,16 +397,11 @@ public:
 
         // AuxPow parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
+        consensus.nAuxpowChainIdNew = 0x0032;
+        consensus.nAuxpowChainIdRetargetHeight = 200;
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPoW2
-        aux2Consensus = consensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0077; // New chain id to enable merge mining alongside Dogecoin
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
-        aux2Consensus.nHeightEffective = 0;
 
         // Dingocoin parameters
         consensus.fSimplifiedRewards = true;
