@@ -76,18 +76,28 @@ struct Params {
     uint256 defaultAssumeValid;
 
     /** Auxpow parameters */
+    int nAuxpowChainIdRetargetHeight;
     int32_t nAuxpowChainId;
+    int32_t nAuxpowChainIdNew;
+    int64_t ChainIdRetarget() const { return nAuxpowChainId; }
     bool fStrictChainId;
     bool fAllowLegacyBlocks;
-
-    /** AuxPow ChainId Change */
-    // int nChainIdChangeHeight; // ToDo
 
     /** Height-aware consensus parameters */
     uint32_t nHeightEffective; // When these parameters come into use
     struct Params *pLeft = nullptr;      // Left hand branch
     struct Params *pRight = nullptr;     // Right hand branch
     const Consensus::Params *GetConsensus(uint32_t nTargetHeight) const;
+
+    // The ChainIdRetargetHeight will need to know which ChainId to point to
+    int64_t ChainIdRetargetAtHeight(unsigned nHeight) const {
+        if(nHeight <= nAuxpowChainIdRetargetHeight) {
+            return nAuxpowChainId;
+        }
+        return nAuxpowChainIdNew;
+    }
+
+
 };
 } // namespace Consensus
 
