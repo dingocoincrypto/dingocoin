@@ -91,10 +91,10 @@ struct Params {
 
     // The ChainIdRetargetHeight will need to know which ChainId to point to
     int64_t ChainIdRetargetAtHeight(unsigned nHeight) const {
-        if(nHeight <= nAuxpowChainIdRetargetHeight) {
-            return nAuxpowChainId;
+        if(nHeight >= nAuxpowChainIdRetargetHeight) {
+            return nAuxpowChainIdNew;
         }
-        return nAuxpowChainIdNew;
+        return nAuxpowChainId;
     }
 
 

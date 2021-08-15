@@ -70,6 +70,7 @@ class CMainParams : public CChainParams {
 private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
+    Consensus::Params aux2Consensus;
 
 public:
     CMainParams() {
@@ -118,11 +119,17 @@ public:
 
         // AuxPoW parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
-        consensus.nAuxpowChainIdNew = 0x0032;
-        consensus.nAuxpowChainIdRetargetHeight = INT_MAX;
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
+
+        // AuxPow2
+        aux2Consensus = consensus;
+        aux2Consensus.nAuxpowChainIdNew = 0x0032;
+        aux2Consensus.nAuxpowChainIdRetargetHeight = INT_MAX;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = true;
+        aux2Consensus.nHeightEffective = INT_MAX;
 
         // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
@@ -141,6 +148,7 @@ public:
         pConsensusRoot = &digishieldConsensus;
         digishieldConsensus.pLeft = &consensus;
         digishieldConsensus.pRight = &auxpowConsensus;
+        auxpowConsensus.pRight = &aux2Consensus;
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -218,6 +226,7 @@ private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
     Consensus::Params minDifficultyConsensus;
+    Consensus::Params aux2Consensus;
 
 public:
     CTestNetParams() {
@@ -268,15 +277,21 @@ public:
 
         // AuxPoW parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
-        consensus.nAuxpowChainIdNew = 0x0032;
-        consensus.nAuxpowChainIdRetargetHeight = 50;
         consensus.fStrictChainId = true;
         consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
 
+        // AuxPow2
+        aux2Consensus = consensus;
+        aux2Consensus.nAuxpowChainIdNew = 0x0032;
+        aux2Consensus.nAuxpowChainIdRetargetHeight = 25;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = true;
+        aux2Consensus.nHeightEffective = 25;
+
         // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
         digishieldConsensus = consensus;
-        digishieldConsensus.nHeightEffective = 145000;
+        digishieldConsensus.nHeightEffective = 5;
         digishieldConsensus.nPowTargetTimespan = 60; // post-digishield: 1 minute
         digishieldConsensus.fDigishieldDifficultyCalculation = true;
         digishieldConsensus.fSimplifiedRewards = true;
@@ -285,13 +300,13 @@ public:
 
         // Blocks 157500 - 158099 are Digishield with minimum difficulty on all blocks
         minDifficultyConsensus = digishieldConsensus;
-        minDifficultyConsensus.nHeightEffective = 30;
+        minDifficultyConsensus.nHeightEffective = 15;
         minDifficultyConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
         minDifficultyConsensus.fPowAllowMinDifficultyBlocks = true;
 
         // Enable AuxPoW at 158100
         auxpowConsensus = minDifficultyConsensus;
-        auxpowConsensus.nHeightEffective = 38;
+        auxpowConsensus.nHeightEffective = 10;
         auxpowConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
         auxpowConsensus.fAllowLegacyBlocks = false;
 
@@ -300,10 +315,11 @@ public:
         digishieldConsensus.pLeft = &consensus;
         digishieldConsensus.pRight = &minDifficultyConsensus;
         minDifficultyConsensus.pRight = &auxpowConsensus;
+        auxpowConsensus.pRight = &aux2Consensus;
 
-        pchMessageStart[0] = 0xdc;
-        pchMessageStart[1] = 0xd1;
-        pchMessageStart[2] = 0xd7;
+        pchMessageStart[0] = 0xfc;
+        pchMessageStart[1] = 0xc1;
+        pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
         vAlertPubKey = ParseHex("042756726da3c7ef515d89212ee1705023d14be389e25fe15611585661b9a20021908b2b80a3c7200a0139dd2b26946606aab0eef9aa7689a6dc2c7eee237fa834");
         nDefaultPort = 44556;
@@ -338,7 +354,7 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            ( 0, uint256S("0xbb0a78264637406b6360aad926284d544d7049f45189db5664f3c4d07350559e"))
+            (  26, uint256S("0x3fce514fc35d0ed13a5cb40c971b0ad8d35e11180f409ac34517f555701032b1"))
 
         };
 
@@ -360,26 +376,27 @@ class CRegTestParams : public CChainParams {
 private:
     Consensus::Params digishieldConsensus;
     Consensus::Params auxpowConsensus;
+    Consensus::Params aux2Consensus;
 
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
         consensus.nSubsidyHalvingInterval = 150;
-        consensus.nMajorityEnforceBlockUpgrade = 750;
-        consensus.nMajorityRejectBlockOutdated = 950;
+        consensus.nMajorityEnforceBlockUpgrade = 12;
+        consensus.nMajorityRejectBlockOutdated = 13;
         consensus.nMajorityWindow = 1000;
         consensus.BIP34Height = 100000000; // BIP34 has not activated on regtest (far in the future so block v1 are not rejected in tests)
         consensus.BIP34Hash = uint256();
-        consensus.BIP65Height = 1351; // BIP65 activated on regtest (Used in rpc activation tests)
-        consensus.BIP66Height = 1251; // BIP66 activated on regtest (Used in rpc activation tests)
+        consensus.BIP65Height = 1; // BIP65 activated on regtest (Used in rpc activation tests)
+        consensus.BIP66Height = 1; // BIP66 activated on regtest (Used in rpc activation tests)
         consensus.powLimit = uint256S("0x7fffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 1;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
         consensus.nPowTargetSpacing = 1; // regtest: 1 second blocks
         consensus.fDigishieldDifficultyCalculation = false;
         consensus.fPowAllowMinDifficultyBlocks = true;
         consensus.fPowNoRetargeting = true;
-        consensus.nRuleChangeActivationThreshold = 540; // 75% for testchains
-        consensus.nMinerConfirmationWindow = 720; // Faster than normal for regtest (2,520 instead of 10,080)
+        consensus.nRuleChangeActivationThreshold = 13; // 75% for testchains
+        consensus.nMinerConfirmationWindow = 15; // Faster than normal for regtest (2,520 instead of 10,080)
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 999999999999ULL;
@@ -398,11 +415,17 @@ public:
 
         // AuxPow parameters
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
-        consensus.nAuxpowChainIdNew = 0x0032;
-        consensus.nAuxpowChainIdRetargetHeight = 200;
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
+
+        // AuxPow2
+        aux2Consensus = auxpowConsensus;
+        aux2Consensus.nAuxpowChainIdNew = 0x0032;
+        aux2Consensus.nAuxpowChainIdRetargetHeight = 25;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
+        aux2Consensus.nHeightEffective = 25;
 
         // Dingocoin parameters
         consensus.fSimplifiedRewards = true;
@@ -421,6 +444,7 @@ public:
         digishieldConsensus.pLeft = &consensus;
         digishieldConsensus.pRight = &auxpowConsensus;
         pConsensusRoot = &digishieldConsensus;
+        auxpowConsensus.pRight = &aux2Consensus;
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
