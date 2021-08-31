@@ -2856,8 +2856,45 @@ bool CheckBlockHeader(const CBlockHeader& block, CValidationState& state, bool f
     // We don't have block height as this is called without context (i.e. without
     // knowing the previous block), but that's okay, as the checks done are permissive
     // (i.e. doesn't check work limit or whether AuxPoW is enabled)
-    if (fCheckPOW && !CheckAuxPowProofOfWork(block, Params().GetConsensus(0)))
-        return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
+
+
+    // We can't check auxpow here because aux chain id is dependent on height with child switch.
+    //if (fCheckPOW && !CheckAuxPowProofOfWork(block, Params().GetConsensus(0)))
+    //    return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "proof of work failed");
+
+
+    // Contents below check as much as possible, adapting the code of CheckAuxPowProofOfWork.
+    if (fCheckPOW) {
+        const Consensus::Params& params = Params().GetConsensus(0);
+        if (!block.IsLegacy() && params.fStrictChainId &&
+            std::find(params.nAuxpowChainIds.begin(), params.nAuxpowChainIds.end(), block.GetChainId()) == params.nAuxpowChainIds.end()) {
+            return state.DoS(50, false, REJECT_INVALID, "high-hash", false, "unaccepted chain id");
+        }
+
+        if (!block.auxpow) {
+            if (block.IsAuxpow())
+                return error("%s : no auxpow on block with auxpow version",
+                             __func__);
+
+            if (!CheckProofOfWork(block.GetPoWHash(), block.nBits, params))
+                return error("%s : non-AUX proof of work failed", __func__);
+
+            return true;
+        }
+
+        // We have auxpow.  Check it.
+
+        if (!block.IsAuxpow())
+            return error("%s : auxpow on block with non-auxpow version", __func__);
+
+
+        // Can't do these since current aux chain id is not known.
+        //if (!block.auxpow->check(block.GetHash(), block.GetChainId(), params))
+        //    return error("%s : AUX POW is not valid", __func__);
+        //if (!CheckProofOfWork(block.auxpow->getParentBlockPoWHash(), block.nBits, params))
+        //    return error("%s : AUX proof of work failed", __func__);
+        //
+    }
 
     return true;
 }
@@ -3003,7 +3040,7 @@ std::vector<unsigned char> GenerateCoinbaseCommitment(CBlock& block, const CBloc
     return commitment;
 }
 
-bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& state, const CBlockIndex* pindexPrev, int64_t nAdjustedTime)
+bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& state, const CBlockIndex* pindexPrev, int64_t nAdjustedTime, bool fCheckPOW)
 {
     const int nHeight = pindexPrev == NULL ? 0 : pindexPrev->nHeight + 1;
     const Consensus::Params& consensusParams = Params().GetConsensus(nHeight);
@@ -3024,9 +3061,15 @@ bool ContextualCheckBlockHeader(const CBlockHeader& block, CValidationState& sta
                                     __func__, pindexPrev->nHeight + 1, consensusParams.nHeightEffective),
                          REJECT_INVALID, "early-auxpow-block");
 
-    // Check proof of work
+    // Check bits for pow.
     if (block.nBits != GetNextWorkRequired(pindexPrev, &block, consensusParams))
-        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work");
+        return state.DoS(100, false, REJECT_INVALID, "bad-diffbits", false, "incorrect proof of work requirement");
+
+    // Check auxpow.
+    if (fCheckPOW && !consensusParams.fAllowLegacyBlocks) {
+      if (!CheckAuxPowProofOfWork(block, consensusParams))
+        return state.DoS(50, error("%s : auxpow failed", __func__), REJECT_INVALID, "auxpow-failed");
+    }
 
     // Check timestamp against prev
     if (block.GetBlockTime() <= pindexPrev->GetMedianTimePast())
@@ -3336,7 +3379,7 @@ bool TestBlockValidity(CValidationState& state, const CChainParams& chainparams,
     indexDummy.nHeight = pindexPrev->nHeight + 1;
 
     // NOTE: CheckBlockHeader is called by CheckBlock
-    if (!ContextualCheckBlockHeader(block, state, pindexPrev, GetAdjustedTime()))
+    if (!ContextualCheckBlockHeader(block, state, pindexPrev, GetAdjustedTime(), fCheckPOW))
         return error("%s: Consensus::ContextualCheckBlockHeader: %s", __func__, FormatStateMessage(state));
     if (!CheckBlock(block, state, fCheckPOW, fCheckMerkleRoot))
         return error("%s: Consensus::CheckBlock: %s", __func__, FormatStateMessage(state));

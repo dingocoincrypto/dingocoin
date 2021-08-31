@@ -123,13 +123,11 @@ public:
         consensus.defaultAssumeValid = uint256S("0xbf1c1d3b185bcd6585c95c1efd7d83da3b41c512200abbf6416638bc94179914"); // 151010
 
         // AuxPoW parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPow2 parameters
-        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
 
         // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
@@ -146,11 +144,10 @@ public:
 
         // AuxPow2
         aux2Consensus = auxpowConsensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = INT_MAX;
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
         aux2Consensus.nHeightEffective = INT_MAX;
+        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
 
         // Assemble the binary search tree of consensus parameters
         pConsensusRoot = &digishieldConsensus; // 5000
@@ -281,13 +278,11 @@ public:
         consensus.defaultAssumeValid = uint256S("0x6943eaeaba98dc7d09f7e73398daccb4abcabb18b66c8c875e52b07638d93951"); // 900,000
 
         // AuxPoW parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
-
-        // AuxPow2 parameters
-        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
 
         // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
         digishieldConsensus = consensus;
@@ -312,11 +307,10 @@ public:
 
         // AuxPow2
         aux2Consensus = minDifficultyConsensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = 25;
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
         aux2Consensus.nHeightEffective = 25;
+        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
 
         // Assemble the binary search tree of parameters
         pConsensusRoot = &digishieldConsensus; // 5
@@ -421,13 +415,11 @@ public:
         consensus.defaultAssumeValid = uint256S("0x00");
 
         // AuxPow parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPow2 parameters
-        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
 
         // Dingocoin parameters
         consensus.fSimplifiedRewards = true;
@@ -444,11 +436,10 @@ public:
 
         // AuxPow2
         aux2Consensus = auxpowConsensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = 50;
+        aux2Consensus.nHeightEffective = 25;
+        aux2Consensus.nAuxpowChainId = 0x0032;
         aux2Consensus.fStrictChainId = true;
         aux2Consensus.fAllowLegacyBlocks = false;
-        aux2Consensus.nHeightEffective = 25;
 
         // Assemble the binary search tree of parameters
         pConsensusRoot = &digishieldConsensus; // 10

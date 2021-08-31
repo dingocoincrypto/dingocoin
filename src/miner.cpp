@@ -151,7 +151,7 @@ std::unique_ptr<CBlockTemplate> BlockAssembler::CreateNewBlock(const CScript& sc
     nHeight = pindexPrev->nHeight + 1;
 
     const Consensus::Params& consensus = chainparams.GetConsensus(nHeight);
-    const int32_t nChainId = consensus.ChainIdRetargetAtHeight(nHeight);
+    const int32_t nChainId = consensus.nAuxpowChainId;
     // FIXME: Active version bits after the always-auxpow fork!
     // const int32_t nVersion = ComputeBlockVersion(pindexPrev, consensus);
     const int32_t nVersion = VERSIONBITS_LAST_OLD_BLOCK_VERSION;
