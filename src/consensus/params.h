@@ -88,6 +88,7 @@ struct Params {
     struct Params *pLeft = nullptr;      // Left hand branch
     struct Params *pRight = nullptr;     // Right hand branch
     const Consensus::Params *GetConsensus(uint32_t nTargetHeight) const;
+    void InsertConsensus(Consensus::Params* item);
 
     // The ChainIdRetargetHeight will need to know which ChainId to point to
     int64_t ChainIdRetargetAtHeight(unsigned nHeight) const {
