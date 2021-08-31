@@ -128,6 +128,9 @@ public:
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
 
+        // AuxPow2 parameters
+        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
+
         // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
         digishieldConsensus.nHeightEffective = 5000;
@@ -283,6 +286,9 @@ public:
         consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
 
+        // AuxPow2 parameters
+        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
+
         // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
         digishieldConsensus = consensus;
         digishieldConsensus.nHeightEffective = 5;
@@ -419,6 +425,9 @@ public:
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
+
+        // AuxPow2 parameters
+        consensus.nAuxpowChainIdRetargetHeight = INT_MAX; // Make sure we don't switch at the start
 
         // Dingocoin parameters
         consensus.fSimplifiedRewards = true;
