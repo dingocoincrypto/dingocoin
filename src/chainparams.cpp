@@ -76,6 +76,11 @@ public:
     CMainParams() {
         strNetworkID = "main";
 
+        genesis = CreateGenesisBlock(1386325540, 99943, 0x1e0ffff0, 1, 88 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691"));
+        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
+
         // Blocks 0 - 4999 are conventional difficulty calculation
         consensus.nSubsidyHalvingInterval = 100000;
         consensus.nMajorityEnforceBlockUpgrade = 1500;
@@ -118,18 +123,11 @@ public:
         consensus.defaultAssumeValid = uint256S("0xbf1c1d3b185bcd6585c95c1efd7d83da3b41c512200abbf6416638bc94179914"); // 151010
 
         // AuxPoW parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPow2
-        aux2Consensus = consensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = INT_MAX;
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
-        aux2Consensus.nHeightEffective = INT_MAX;
 
         // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
@@ -144,11 +142,18 @@ public:
         auxpowConsensus.nHeightEffective = 7500;
         auxpowConsensus.fAllowLegacyBlocks = false;
 
+        // AuxPow2
+        aux2Consensus = auxpowConsensus;
+        aux2Consensus.nHeightEffective = INT_MAX;
+        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
+
         // Assemble the binary search tree of consensus parameters
-        pConsensusRoot = &digishieldConsensus;
-        digishieldConsensus.pLeft = &consensus;
-        digishieldConsensus.pRight = &auxpowConsensus;
-        auxpowConsensus.pRight = &aux2Consensus;
+        pConsensusRoot = &digishieldConsensus; // 5000
+        pConsensusRoot->InsertConsensus(&consensus); // 0
+        pConsensusRoot->InsertConsensus(&auxpowConsensus); // 7500
+        pConsensusRoot->InsertConsensus(&aux2Consensus); // INT_MAX
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -162,14 +167,6 @@ public:
         vAlertPubKey = ParseHex("04d4da7a5dae4db797d9b0644d57a5cd50e05a70f36091cd62e2fc41c98ded06340be5a43a35e185690cd9cde5d72da8f6d065b499b06f51dcfba14aad859f443a");
         nDefaultPort = 33117;
         nPruneAfterHeight = 100000;
-
-        genesis = CreateGenesisBlock(1386325540, 99943, 0x1e0ffff0, 1, 88 * COIN);
-
-        consensus.hashGenesisBlock = genesis.GetHash();
-        digishieldConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        auxpowConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        assert(consensus.hashGenesisBlock == uint256S("0x1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691"));
-        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.push_back(CDNSSeedData("139.180.181.92", "139.180.181.92", true));
@@ -232,6 +229,11 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
 
+        genesis = CreateGenesisBlock(1391503289, 997879, 0x1e0ffff0, 1, 88 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0xbb0a78264637406b6360aad926284d544d7049f45189db5664f3c4d07350559e"));
+        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
+
         // Blocks 0 - 144999 are pre-Digishield
         consensus.nHeightEffective = 0;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
@@ -270,24 +272,17 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = INT_MAX;
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000000001030d1382ade");
+        consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
         consensus.defaultAssumeValid = uint256S("0x6943eaeaba98dc7d09f7e73398daccb4abcabb18b66c8c875e52b07638d93951"); // 900,000
 
         // AuxPoW parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
-
-        // AuxPow2
-        aux2Consensus = consensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = 25;
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = true;
-        aux2Consensus.nHeightEffective = 25;
 
         // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
         digishieldConsensus = consensus;
@@ -298,24 +293,31 @@ public:
         digishieldConsensus.fPowAllowMinDifficultyBlocks = false;
         digishieldConsensus.nCoinbaseMaturity = 240;
 
-        // Blocks 157500 - 158099 are Digishield with minimum difficulty on all blocks
-        minDifficultyConsensus = digishieldConsensus;
-        minDifficultyConsensus.nHeightEffective = 15;
-        minDifficultyConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
-        minDifficultyConsensus.fPowAllowMinDifficultyBlocks = true;
-
         // Enable AuxPoW at 158100
-        auxpowConsensus = minDifficultyConsensus;
+        auxpowConsensus = digishieldConsensus;
         auxpowConsensus.nHeightEffective = 10;
         auxpowConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
         auxpowConsensus.fAllowLegacyBlocks = false;
 
+        // Blocks 157500 - 158099 are Digishield with minimum difficulty on all blocks
+        minDifficultyConsensus = auxpowConsensus;
+        minDifficultyConsensus.nHeightEffective = 15;
+        minDifficultyConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
+        minDifficultyConsensus.fPowAllowMinDifficultyBlocks = true;
+
+        // AuxPow2
+        aux2Consensus = minDifficultyConsensus;
+        aux2Consensus.nHeightEffective = 25;
+        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
+
         // Assemble the binary search tree of parameters
-        pConsensusRoot = &digishieldConsensus;
-        digishieldConsensus.pLeft = &consensus;
-        digishieldConsensus.pRight = &minDifficultyConsensus;
-        minDifficultyConsensus.pRight = &auxpowConsensus;
-        auxpowConsensus.pRight = &aux2Consensus;
+        pConsensusRoot = &digishieldConsensus; // 5
+        pConsensusRoot->InsertConsensus(&consensus); // 0
+        pConsensusRoot->InsertConsensus(&auxpowConsensus); // 10
+        pConsensusRoot->InsertConsensus(&minDifficultyConsensus); // 15
+        pConsensusRoot->InsertConsensus(&aux2Consensus); // 25
 
         pchMessageStart[0] = 0xfc;
         pchMessageStart[1] = 0xc1;
@@ -324,14 +326,6 @@ public:
         vAlertPubKey = ParseHex("042756726da3c7ef515d89212ee1705023d14be389e25fe15611585661b9a20021908b2b80a3c7200a0139dd2b26946606aab0eef9aa7689a6dc2c7eee237fa834");
         nDefaultPort = 44556;
         nPruneAfterHeight = 1000;
-
-        genesis = CreateGenesisBlock(1391503289, 997879, 0x1e0ffff0, 1, 88 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
-        digishieldConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        minDifficultyConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        auxpowConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        assert(consensus.hashGenesisBlock == uint256S("0xbb0a78264637406b6360aad926284d544d7049f45189db5664f3c4d07350559e"));
-        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
 
         vFixedSeeds.clear();
         vSeeds.clear();
@@ -381,6 +375,13 @@ private:
 public:
     CRegTestParams() {
         strNetworkID = "regtest";
+
+        genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 88 * COIN);
+        consensus.hashGenesisBlock = genesis.GetHash();
+        assert(consensus.hashGenesisBlock == uint256S("0x3d2160a3b5dc4a9d62e7e66a295f70313ac808440ef7400d6c0772171ce973a5"));
+        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
+
+        consensus.hashGenesisBlock = genesis.GetHash();
         consensus.nSubsidyHalvingInterval = 150;
         consensus.nMajorityEnforceBlockUpgrade = 12;
         consensus.nMajorityRejectBlockOutdated = 13;
@@ -414,18 +415,11 @@ public:
         consensus.defaultAssumeValid = uint256S("0x00");
 
         // AuxPow parameters
+        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
         consensus.fAllowLegacyBlocks = true;
         consensus.nHeightEffective = 0;
-
-        // AuxPow2
-        aux2Consensus = auxpowConsensus;
-        aux2Consensus.nAuxpowChainIdNew = 0x0032;
-        aux2Consensus.nAuxpowChainIdRetargetHeight = 25;
-        aux2Consensus.fStrictChainId = true;
-        aux2Consensus.fAllowLegacyBlocks = false;
-        aux2Consensus.nHeightEffective = 25;
 
         // Dingocoin parameters
         consensus.fSimplifiedRewards = true;
@@ -440,11 +434,18 @@ public:
         auxpowConsensus.fAllowLegacyBlocks = false;
         auxpowConsensus.nHeightEffective = 20;
 
+        // AuxPow2
+        aux2Consensus = auxpowConsensus;
+        aux2Consensus.nHeightEffective = 25;
+        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.fStrictChainId = true;
+        aux2Consensus.fAllowLegacyBlocks = false;
+
         // Assemble the binary search tree of parameters
-        digishieldConsensus.pLeft = &consensus;
-        digishieldConsensus.pRight = &auxpowConsensus;
-        pConsensusRoot = &digishieldConsensus;
-        auxpowConsensus.pRight = &aux2Consensus;
+        pConsensusRoot = &digishieldConsensus; // 10
+        pConsensusRoot->InsertConsensus(&consensus); // 0
+        pConsensusRoot->InsertConsensus(&auxpowConsensus); // 20
+        pConsensusRoot->InsertConsensus(&aux2Consensus); // 25
 
         pchMessageStart[0] = 0xfa;
         pchMessageStart[1] = 0xbf;
@@ -452,13 +453,6 @@ public:
         pchMessageStart[3] = 0xda;
         nDefaultPort = 18444;
         nPruneAfterHeight = 1000;
-
-        genesis = CreateGenesisBlock(1296688602, 2, 0x207fffff, 1, 88 * COIN);
-        consensus.hashGenesisBlock = genesis.GetHash();
-        digishieldConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        auxpowConsensus.hashGenesisBlock = consensus.hashGenesisBlock;
-        assert(consensus.hashGenesisBlock == uint256S("0x3d2160a3b5dc4a9d62e7e66a295f70313ac808440ef7400d6c0772171ce973a5"));
-        assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
 
         vFixedSeeds.clear(); //!< Regtest mode doesn't have any fixed seeds.
         vSeeds.clear();      //!< Regtest mode doesn't have any DNS seeds.
@@ -502,8 +496,8 @@ const CChainParams &Params() {
 }
 
 const Consensus::Params *Consensus::Params::GetConsensus(uint32_t nTargetHeight) const {
-    if (nTargetHeight < this -> nHeightEffective && this -> pLeft != NULL) {
-        return this -> pLeft -> GetConsensus(nTargetHeight);
+    if (nTargetHeight < this->nHeightEffective && this->pLeft != NULL) {
+        return this->pLeft->GetConsensus(nTargetHeight);
     } else if (nTargetHeight > this -> nHeightEffective && this -> pRight != NULL) {
         const Consensus::Params *pCandidate = this -> pRight -> GetConsensus(nTargetHeight);
         if (pCandidate->nHeightEffective <= nTargetHeight) {
@@ -513,6 +507,24 @@ const Consensus::Params *Consensus::Params::GetConsensus(uint32_t nTargetHeight)
 
     // No better match below the target height
     return this;
+}
+
+void Consensus::Params::InsertConsensus(Consensus::Params* item) {
+  if (item->nHeightEffective < this->nHeightEffective) {
+    if (this->pLeft == NULL) {
+      this->pLeft = item;
+    } else {
+      this->pLeft->InsertConsensus(item);
+    }
+  } else if (item->nHeightEffective > this->nHeightEffective) {
+    if (this->pRight == NULL) {
+      this->pRight = item;
+    } else {
+      this->pRight->InsertConsensus(item);
+    }
+  } else {
+    throw std::runtime_error(strprintf("Duplicate consensus.nHeightEffective: %d", item->nHeightEffective));
+  }
 }
 
 CChainParams& Params(const std::string& chain)

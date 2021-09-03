@@ -88,7 +88,6 @@ unsigned int CalculateDingocoinNextWorkRequired(const CBlockIndex* pindexLast, i
 
 bool CheckAuxPowProofOfWork(const CBlockHeader& block, const Consensus::Params& params)
 {
-    int nHeight;
     /* Except for legacy blocks with full version 1, ensure that
        the chain ID is correct.  Legacy blocks are not allowed since
        the merge-mining start, which is checked in AcceptBlockHeader

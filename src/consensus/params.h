@@ -9,6 +9,7 @@
 #include "uint256.h"
 #include <map>
 #include <string>
+#include <vector>
 
 namespace Consensus {
 
@@ -76,10 +77,8 @@ struct Params {
     uint256 defaultAssumeValid;
 
     /** Auxpow parameters */
-    int nAuxpowChainIdRetargetHeight;
     int32_t nAuxpowChainId;
-    int32_t nAuxpowChainIdNew;
-    int64_t ChainIdRetarget() const { return nAuxpowChainId; }
+    std::vector<int32_t> nAuxpowChainIds; // Includes all possible future chainIds.
     bool fStrictChainId;
     bool fAllowLegacyBlocks;
 
@@ -88,14 +87,7 @@ struct Params {
     struct Params *pLeft = nullptr;      // Left hand branch
     struct Params *pRight = nullptr;     // Right hand branch
     const Consensus::Params *GetConsensus(uint32_t nTargetHeight) const;
-
-    // The ChainIdRetargetHeight will need to know which ChainId to point to
-    int64_t ChainIdRetargetAtHeight(unsigned nHeight) const {
-        if(nHeight >= nAuxpowChainIdRetargetHeight) {
-            return nAuxpowChainIdNew;
-        }
-        return nAuxpowChainId;
-    }
+    void InsertConsensus(Consensus::Params* item);
 
 
 };
