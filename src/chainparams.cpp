@@ -88,7 +88,7 @@ public:
         consensus.nMajorityWindow = 2000;
         // BIP34 is never enforced in Dingocoin v2 blocks, so we enforce from v3
         consensus.BIP34Height = 129999;
-        consensus.BIP34Hash = uint256S("0x00");
+        consensus.BIP34Hash = uint256S("0x801f73ac28d2c05e33868a6e751e21f967a0ba88b03395696b97194e04f8e39b");
         consensus.BIP65Height = 197999;
         consensus.BIP66Height = 198999;
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20;
@@ -117,10 +117,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1683030979; // May 5th, 2023
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000000043437f096f99172");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006212919ecbb3b34");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xbf1c1d3b185bcd6585c95c1efd7d83da3b41c512200abbf6416638bc94179914"); // 151010
+        consensus.defaultAssumeValid = uint256S("0x62ad9c9bc2baefa68d6c3ed0e7d1f19cce817b21b1211f5beaa8952696ce2fec"); // 205022
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -144,8 +144,8 @@ public:
 
         // AuxPow2
         aux2Consensus = auxpowConsensus;
-        aux2Consensus.nHeightEffective = INT_MAX;
-        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus.nHeightEffective = 265000; // At 26.5k blocks we switch to new Chain ID of 50
+        aux2Consensus.nAuxpowChainId = 0x0032; // Chain ID of 50
         aux2Consensus.fStrictChainId = true;
         aux2Consensus.fAllowLegacyBlocks = false;
 
@@ -153,7 +153,7 @@ public:
         pConsensusRoot = &digishieldConsensus; // 5000
         pConsensusRoot->InsertConsensus(&consensus); // 0
         pConsensusRoot->InsertConsensus(&auxpowConsensus); // 7500
-        pConsensusRoot->InsertConsensus(&aux2Consensus); // INT_MAX
+        pConsensusRoot->InsertConsensus(&aux2Consensus); // 265000
 
         /**
          * The message start string is designed to be unlikely to occur in normal data.
@@ -201,6 +201,7 @@ public:
             (  37486, uint256S("0x58c8b4c5c07efafaeb602b93ca0a46f4c442871964d43b26b76a281883f9d2e2"))
             (  65694, uint256S("0x71d55f53676a85567e96020194d66736751a4330814142c86a4bac9972109c3d"))
             ( 159010, uint256S("0x4223941e5b442f6413921b4ee376aa75e01b8522b42d4cb0d293914e628eb81f"))
+            ( 205022, uint256S("0x62ad9c9bc2baefa68d6c3ed0e7d1f19cce817b21b1211f5beaa8952696ce2fec"))
         };
 
         chainTxData = ChainTxData{
