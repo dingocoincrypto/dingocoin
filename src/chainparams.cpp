@@ -117,10 +117,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1683030979; // May 5th, 2023
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006212919ecbb3b34");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006a7329290ba340d");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x62ad9c9bc2baefa68d6c3ed0e7d1f19cce817b21b1211f5beaa8952696ce2fec"); // 205022
+        consensus.defaultAssumeValid = uint256S("0xcf087383153e13a3ec05130d9cf0ae5270ef3f468c2a50a22313e49af3d9f0c3"); // 222666
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -202,13 +202,14 @@ public:
             (  65694, uint256S("0x71d55f53676a85567e96020194d66736751a4330814142c86a4bac9972109c3d"))
             ( 159010, uint256S("0x4223941e5b442f6413921b4ee376aa75e01b8522b42d4cb0d293914e628eb81f"))
             ( 205022, uint256S("0x62ad9c9bc2baefa68d6c3ed0e7d1f19cce817b21b1211f5beaa8952696ce2fec"))
+            ( 222333, uint256S("0xc99682f70c4243247d1fffc282134e10067769ce36bb3f53e9c90c8ff7e398e9"))
         };
 
         chainTxData = ChainTxData{
             // Data as of block 594a42d8fe16382085dc982135df72cf8fcea12d34e6efd566e2f9e442e2136f (height 1).
             // Tx estimate based on average of year 2021 (~40k transactions per day)
-            1627728696, // * UNIX timestamp of last checkpoint block
-            197625,   // * total number of transactions between genesis and last checkpoint
+            1631772861, // * UNIX timestamp of last checkpoint block
+            239348,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.26        // * estimated number of transactions per second after checkpoint
         };
