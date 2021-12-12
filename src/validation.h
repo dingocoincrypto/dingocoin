@@ -149,7 +149,7 @@ static const int MAX_UNCONNECTING_HEADERS = 10;
 
 static const bool DEFAULT_PEERBLOOMFILTERS = true;
 
-static const uint64_t DEFAULT_MAX_REORG_LENGTH = 100;
+static const uint64_t DEFAULT_MAX_REORG_LENGTH = 20;
 
 struct BlockHasher
 {
