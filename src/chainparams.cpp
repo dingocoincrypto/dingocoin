@@ -174,7 +174,7 @@ public:
         vSeeds.push_back(CDNSSeedData("139.180.173.59", "139.180.173.59", true));
         vSeeds.push_back(CDNSSeedData("165.232.173.117", "165.232.173.117", true));
         vSeeds.push_back(CDNSSeedData("mint.australiacash.org", "mint.australiacash.org", true));
-        vSeeds.push_back(CDNSSeedData("blockcrushers.xyz", "blockcrushers.xyz", true));
+        vSeeds.push_back(CDNSSeedData("dnsseed.twinkykms.com", "dnsseed.twinkykms.com", true));
         vSeeds.push_back(CDNSSeedData("75.119.143.152", "75.119.143.152", true));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
