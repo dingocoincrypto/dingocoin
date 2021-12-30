@@ -170,13 +170,13 @@ public:
 
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
-        vSeeds.push_back(CDNSSeedData("139.180.181.92", "139.180.181.92", true));
-        vSeeds.push_back(CDNSSeedData("45.76.120.169", "45.76.120.169", true));
-        vSeeds.push_back(CDNSSeedData("139.180.173.59", "139.180.173.59", true));
-        vSeeds.push_back(CDNSSeedData("165.232.173.117", "165.232.173.117", true));
-        vSeeds.push_back(CDNSSeedData("mint.australiacash.org", "mint.australiacash.org", true));
+//         vSeeds.push_back(CDNSSeedData("139.180.181.92", "139.180.181.92", true));
+//         vSeeds.push_back(CDNSSeedData("45.76.120.169", "45.76.120.169", true));
+//         vSeeds.push_back(CDNSSeedData("139.180.173.59", "139.180.173.59", true));
+//         vSeeds.push_back(CDNSSeedData("165.232.173.117", "165.232.173.117", true));
+//         vSeeds.push_back(CDNSSeedData("mint.australiacash.org", "mint.australiacash.org", true));
         vSeeds.push_back(CDNSSeedData("vps.twinkykms.com", "dnsseed.twinkykms.com", true));
-        vSeeds.push_back(CDNSSeedData("75.119.143.152", "75.119.143.152", true));
+//         vSeeds.push_back(CDNSSeedData("75.119.143.152", "75.119.143.152", true));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,22);
