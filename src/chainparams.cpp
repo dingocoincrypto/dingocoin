@@ -109,12 +109,12 @@ public:
         // XXX: BIP heights and hashes all need to be updated to Dingocoin values
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1651494979; // May 5th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 1683030979; // May 5th, 2023
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 0; // Disabled
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1651494979; // May 5th, 2022
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 1683030979; // May 5th, 2023
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
         // The best chain should have at least this much work.
         consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006a7329290ba340d");
@@ -169,15 +169,15 @@ public:
         nPruneAfterHeight = 100000;
 
         // Note that of those with the service bits flag, most only support a subset of possible options
+        vSeeds.push_back(CDNSSeedData("vps.twinkykms.com", "dnsseed.twinkykms.com", true));
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
         vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed1.dingocoin.org", true));
         vSeeds.push_back(CDNSSeedData("australiacash.org", "mint.australiacash.org", true));
-        vSeeds.push_back(CDNSSeedData("vps.twinkykms.com", "dnsseed.twinkykms.com", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed5.dingocoin.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed6.dingocoin.org", true));
+        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
+        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
+        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
+        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed5.dingocoin.org", true));
+        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed6.dingocoin.org", true));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,22);
@@ -205,15 +205,16 @@ public:
             ( 159010, uint256S("0x4223941e5b442f6413921b4ee376aa75e01b8522b42d4cb0d293914e628eb81f"))
             ( 205022, uint256S("0x62ad9c9bc2baefa68d6c3ed0e7d1f19cce817b21b1211f5beaa8952696ce2fec"))
             ( 222333, uint256S("0xc99682f70c4243247d1fffc282134e10067769ce36bb3f53e9c90c8ff7e398e9"))
+            ( 300009, uint256S("0xcb18be1476083dd7e50783f71c0412ea36c2cc92b1713bf6e5e6f091d25f78dc"))
         };
 
         chainTxData = ChainTxData{
             // Data as of block 594a42d8fe16382085dc982135df72cf8fcea12d34e6efd566e2f9e442e2136f (height 1).
             // Tx estimate based on average of year 2021 (~40k transactions per day)
-            1631772861, // * UNIX timestamp of last checkpoint block
-            239348,   // * total number of transactions between genesis and last checkpoint
+            1636665593, // * UNIX timestamp of last checkpoint block
+            339348,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.26        // * estimated number of transactions per second after checkpoint
+            0.76        // * estimated number of transactions per second after checkpoint
         };
     }
 };
