@@ -117,10 +117,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006a7329290ba340d");
+        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000334e1582b422e8575");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xcf087383153e13a3ec05130d9cf0ae5270ef3f468c2a50a22313e49af3d9f0c3"); // 222666
+        consensus.defaultAssumeValid = uint256S("0x3ecbf347dcc986f017e687737f4dbeb59011b5f37d197669f7ecba7a3b965024"); // 489180
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -212,7 +212,7 @@ public:
         chainTxData = ChainTxData{
             // Data as of block 594a42d8fe16382085dc982135df72cf8fcea12d34e6efd566e2f9e442e2136f (height 1).
             // Tx estimate based on average of year 2021 (~40k transactions per day)
-            1648322997, // * UNIX timestamp of last checkpoint block
+            1648423897, // * UNIX timestamp of last checkpoint block
             339348,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.76        // * estimated number of transactions per second after checkpoint
