@@ -1176,18 +1176,20 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
         return true;
     }
 
-    int minPeerProtoVersion = chainActive.Height() >= chainparams.getNewProtocolHeight() ?
-        		NEW_MIN_PEER_PROTO_VERSION : MIN_PEER_PROTO_VERSION;
-    //if the peer is trying to communicate with us, and is on older version disconnect them.
-    if (pfrom->nVersion < minPeerProtoVersion && pfrom->nVersion != 0)
+    int minPeerProtoVersion = chainActive.Height() >= chainparams.getNewProtocolHeight() ? 
+            NEW_MIN_PEER_PROTO_VERSION : MIN_PEER_PROTO_VERSION;
+    if (pfrom->nVersion != 0)
     {
-        LogPrintf("peer=%d using obsolete version %i; disconnecting\n", pfrom->id, pfrom->nVersion);
-        connman.PushMessage(pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::REJECT, strCommand, REJECT_OBSOLETE,
-        strprintf("Version must be %d or greater", minPeerProtoVersion)));
-        pfrom->fDisconnect = true;
-        return false;
+        if (pfrom->nVersion < minPeerProtoVersion)
+        {
+            LogPrintf("peer=%d using obsolete version %i; disconnecting\n", pfrom->id, pfrom->nVersion);
+            connman.PushMessage(pfrom, CNetMsgMaker(INIT_PROTO_VERSION).Make(NetMsgType::REJECT, strCommand, REJECT_OBSOLETE,
+                                    strprintf("Version must be %d or greater", minPeerProtoVersion)));
+            pfrom->fDisconnect = true;
+            return false;
+        }
     }
-
+    
     if (!(pfrom->GetLocalServices() & NODE_BLOOM) &&
               (strCommand == NetMsgType::FILTERLOAD ||
                strCommand == NetMsgType::FILTERADD))
@@ -1265,8 +1267,6 @@ bool static ProcessMessage(CNode* pfrom, const std::string& strCommand, CDataStr
             pfrom->fDisconnect = true;
             return false;
         }
-
-        //redundant of line 1179, line 1179 can be removed in next version.
         if (nVersion < minPeerProtoVersion)
         {
             // disconnect from peers older than this proto version

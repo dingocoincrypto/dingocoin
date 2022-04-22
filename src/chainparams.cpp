@@ -91,7 +91,7 @@ public:
         consensus.BIP34Hash = uint256S("0x801f73ac28d2c05e33868a6e751e21f967a0ba88b03395696b97194e04f8e39b");
         consensus.BIP65Height = 197999;
         consensus.BIP66Height = 198999;
-        consensus.newMinProtoHeight = 552000;
+        consensus.newMinProtoHeight = 569730;
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
         consensus.nPowTargetSpacing = 60; // 1 minute
@@ -118,10 +118,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000351c16b050b63e98c");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000003a748e914cd98349b");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x83c341127a4dfabd720c36e7f3f9d56b35dd1c30b71dc353fa646c014744cc9f"); // 497420
+        consensus.defaultAssumeValid = uint256S("0x5cd1462506d2d2637cd190489265b8adec9045d656a65d57f0dbf705fc447b64"); // 517371
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -170,10 +170,9 @@ public:
         nPruneAfterHeight = 100000;
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.push_back(CDNSSeedData("vps.twinkykms.com", "dnsseed.twinkykms.com", true));
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed1.dingocoin.org", true));
         vSeeds.push_back(CDNSSeedData("australiacash.org", "mint.australiacash.org", true));
+        vSeeds.push_back(CDNSSeedData("dingocoin.com", "209.126.81.147", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
@@ -209,13 +208,14 @@ public:
             ( 300009, uint256S("0xcb18be1476083dd7e50783f71c0412ea36c2cc92b1713bf6e5e6f091d25f78dc"))
             ( 487649, uint256S("0x4de898291b44f64a4e9349adda2e98556d2568a82585c4bc5b84c59636b40d24"))
             ( 497420, uint256S("0x83c341127a4dfabd720c36e7f3f9d56b35dd1c30b71dc353fa646c014744cc9f"))
+            ( 517371, uint256S("0x5cd1462506d2d2637cd190489265b8adec9045d656a65d57f0dbf705fc447b64"))
         };
 
         chainTxData = ChainTxData{
             // Data as of block 594a42d8fe16382085dc982135df72cf8fcea12d34e6efd566e2f9e442e2136f (height 1).
             // Tx estimate based on average of year 2021 (~40k transactions per day)
-            1648948094, // * UNIX timestamp of last checkpoint block
-            627214,   // * total number of transactions between genesis and last checkpoint
+            1650187526, // * UNIX timestamp of last checkpoint block
+            650371,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
             0.10        // * estimated number of transactions per second after checkpoint
         };
