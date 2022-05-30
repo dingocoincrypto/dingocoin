@@ -91,7 +91,7 @@ public:
         consensus.BIP34Hash = uint256S("0x801f73ac28d2c05e33868a6e751e21f967a0ba88b03395696b97194e04f8e39b");
         consensus.BIP65Height = 197999;
         consensus.BIP66Height = 198999;
-        consensus.newMinProtoHeight = 569730;
+        consensus.newMinProtoHeight = 969730;
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
         consensus.nPowTargetSpacing = 60; // 1 minute
