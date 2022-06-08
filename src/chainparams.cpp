@@ -91,6 +91,7 @@ public:
         consensus.BIP34Hash = uint256S("0x801f73ac28d2c05e33868a6e751e21f967a0ba88b03395696b97194e04f8e39b");
         consensus.BIP65Height = 197999;
         consensus.BIP66Height = 198999;
+        consensus.newMinProtoHeight = 969730;
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
         consensus.nPowTargetSpacing = 60; // 1 minute
@@ -117,10 +118,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00000000000000000000000000000000000000000000000006a7329290ba340d");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000003a748e914cd98349b");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xcf087383153e13a3ec05130d9cf0ae5270ef3f468c2a50a22313e49af3d9f0c3"); // 222666
+        consensus.defaultAssumeValid = uint256S("0x5cd1462506d2d2637cd190489265b8adec9045d656a65d57f0dbf705fc447b64"); // 517371
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -144,7 +145,7 @@ public:
 
         // AuxPow2
         aux2Consensus = auxpowConsensus;
-        aux2Consensus.nHeightEffective = 265000; // At 26.5k blocks we switch to new Chain ID of 50
+        aux2Consensus.nHeightEffective = 265000; // At 265,000 blocks we switch to new Chain ID of 50
         aux2Consensus.nAuxpowChainId = 0x0032; // Chain ID of 50
         aux2Consensus.fStrictChainId = true;
         aux2Consensus.fAllowLegacyBlocks = false;
@@ -169,10 +170,9 @@ public:
         nPruneAfterHeight = 100000;
 
         // Note that of those with the service bits flag, most only support a subset of possible options
-        vSeeds.push_back(CDNSSeedData("vps.twinkykms.com", "dnsseed.twinkykms.com", true));
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed1.dingocoin.org", true));
         vSeeds.push_back(CDNSSeedData("australiacash.org", "mint.australiacash.org", true));
+        vSeeds.push_back(CDNSSeedData("dingocoin.com", "209.126.81.147", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
         // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
@@ -207,22 +207,24 @@ public:
             ( 222333, uint256S("0xc99682f70c4243247d1fffc282134e10067769ce36bb3f53e9c90c8ff7e398e9"))
             ( 300009, uint256S("0xcb18be1476083dd7e50783f71c0412ea36c2cc92b1713bf6e5e6f091d25f78dc"))
             ( 487649, uint256S("0x4de898291b44f64a4e9349adda2e98556d2568a82585c4bc5b84c59636b40d24"))
+            ( 497420, uint256S("0x83c341127a4dfabd720c36e7f3f9d56b35dd1c30b71dc353fa646c014744cc9f"))
+            ( 517371, uint256S("0x5cd1462506d2d2637cd190489265b8adec9045d656a65d57f0dbf705fc447b64"))
         };
 
         chainTxData = ChainTxData{
             // Data as of block 594a42d8fe16382085dc982135df72cf8fcea12d34e6efd566e2f9e442e2136f (height 1).
             // Tx estimate based on average of year 2021 (~40k transactions per day)
-            1648322997, // * UNIX timestamp of last checkpoint block
-            339348,   // * total number of transactions between genesis and last checkpoint
+            1650187526, // * UNIX timestamp of last checkpoint block
+            650371,   // * total number of transactions between genesis and last checkpoint
                         //   (the tx=... number in the SetBestChain debug.log lines)
-            0.76        // * estimated number of transactions per second after checkpoint
+            0.10        // * estimated number of transactions per second after checkpoint
         };
     }
 };
 static CMainParams mainParams;
 
 /**
- * Testnet (v3)
+ * Testnet (v1)
  */
 class CTestNetParams : public CChainParams {
 private:
@@ -235,33 +237,32 @@ public:
     CTestNetParams() {
         strNetworkID = "test";
 
-        genesis = CreateGenesisBlock(1391503289, 997879, 0x1e0ffff0, 1, 88 * COIN);
+        genesis = CreateGenesisBlock(1386325540, 99943, 0x1e0ffff0, 1, 88 * COIN);
         consensus.hashGenesisBlock = genesis.GetHash();
-        assert(consensus.hashGenesisBlock == uint256S("0xbb0a78264637406b6360aad926284d544d7049f45189db5664f3c4d07350559e"));
+        assert(consensus.hashGenesisBlock == uint256S("0x1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691"));
         assert(genesis.hashMerkleRoot == uint256S("0x5b2a3f53f605d62c53e62932dac6925e3d74afa5a4b459745c36d42d0ed26a69"));
 
-        // Blocks 0 - 144999 are pre-Digishield
-        consensus.nHeightEffective = 0;
-        consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
-        consensus.fDigishieldDifficultyCalculation = false;
-        consensus.nCoinbaseMaturity = 30;
-        consensus.fPowAllowMinDifficultyBlocks = true;
-        consensus.fPowAllowDigishieldMinDifficultyBlocks = false;
+        // Blocks 0 - 4999 are conventional difficulty calculation
         consensus.nSubsidyHalvingInterval = 100000;
-        consensus.nMajorityEnforceBlockUpgrade = 50;
-        consensus.nMajorityRejectBlockOutdated = 75;
-        consensus.nMajorityWindow = 1000;
+        consensus.nMajorityEnforceBlockUpgrade = 1500;
+        consensus.nMajorityRejectBlockOutdated = 1900;
+        consensus.nMajorityWindow = 2000;
         // BIP34 is never enforced in Dingocoin v2 blocks, so we enforce from v3
-        consensus.BIP34Height = 708658;
-        consensus.BIP34Hash = uint256S("0x21b8b97dcdb94caa67c7f8f6dbf22e61e0cfe0e46e1fff3528b22864659e9b38");
-        consensus.BIP65Height = 1854705; // 955bd496d23790aba1ecfacb722b089a6ae7ddabaedf7d8fb0878f48308a71f9
-        consensus.BIP66Height = 708658; // 21b8b97dcdb94caa67c7f8f6dbf22e61e0cfe0e46e1fff3528b22864659e9b38 - this is the last block that could be v2, 1900 blocks past the last v2 block
+        consensus.BIP34Height = 1;
+        consensus.BIP34Hash = uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426");
+        consensus.BIP65Height = 1;
+        consensus.BIP66Height = 1;
+        consensus.newMinProtoHeight = 15000;
         consensus.powLimit = uint256S("0x00000fffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"); // ~uint256(0) >> 20;
         consensus.nPowTargetTimespan = 4 * 60 * 60; // pre-digishield: 4 hours
         consensus.nPowTargetSpacing = 60; // 1 minute
+        consensus.fDigishieldDifficultyCalculation = false;
+        consensus.nCoinbaseMaturity = 30;
+        consensus.fPowAllowMinDifficultyBlocks = false;
+        consensus.fPowAllowDigishieldMinDifficultyBlocks = false;
         consensus.fPowNoRetargeting = false;
-        consensus.nRuleChangeActivationThreshold = 28; // 2 days (note this is significantly lower than Bitcoin standard)
-        consensus.nMinerConfirmationWindow = 100; // 60 * 24 * 7 = 10,080 blocks, or one week
+        consensus.nRuleChangeActivationThreshold = 9576; // 95% of 10,080
+        consensus.nMinerConfirmationWindow = 10080; // 60 * 24 * 7 = 10,080 blocks, or one week
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].bit = 28;
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nStartTime = 1199145601; // January 1, 2008
         consensus.vDeployments[Consensus::DEPLOYMENT_TESTDUMMY].nTimeout = 1230767999; // December 31, 2008
@@ -269,74 +270,65 @@ public:
         // Deployment of BIP68, BIP112, and BIP113.
         // XXX: BIP heights and hashes all need to be updated to Dingocoin values
         consensus.vDeployments[Consensus::DEPLOYMENT_CSV].bit = 0;
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1456790400; // March 1st, 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = INT_MAX; // May 1st, 2017
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nStartTime = 1651494979; // May 5th, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_CSV].nTimeout = 0; // Disabled
 
         // Deployment of SegWit (BIP141, BIP143, and BIP147)
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].bit = 1;
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1462060800; // May 1st 2016
-        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = INT_MAX;
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1651494979; // May 5th, 2022
+        consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
-        // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x00");
+     // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000200020");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x6943eaeaba98dc7d09f7e73398daccb4abcabb18b66c8c875e52b07638d93951"); // 900,000
+        consensus.defaultAssumeValid = uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426"); // 900,000
 
         // AuxPoW parameters
-        consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
+        consensus.nAuxpowChainIds = {0x0062, 0x0099}; // All future chain IDs. Used for permissive block header checks.
         consensus.nAuxpowChainId = 0x0062; // 98 - Josh Wise!
         consensus.fStrictChainId = true;
-        consensus.nHeightEffective = 0;
         consensus.fAllowLegacyBlocks = true;
+        consensus.nHeightEffective = 0;
 
-        // Blocks 145000 - 157499 are Digishield without minimum difficulty on all blocks
+        // Blocks 5000 - 7500 are Digishield without AuxPoW
         digishieldConsensus = consensus;
-        digishieldConsensus.nHeightEffective = 5;
-        digishieldConsensus.nPowTargetTimespan = 60; // post-digishield: 1 minute
-        digishieldConsensus.fDigishieldDifficultyCalculation = true;
+        digishieldConsensus.nHeightEffective = 5000;
         digishieldConsensus.fSimplifiedRewards = true;
-        digishieldConsensus.fPowAllowMinDifficultyBlocks = false;
+        digishieldConsensus.fDigishieldDifficultyCalculation = true;
+        digishieldConsensus.nPowTargetTimespan = 60; // post-digishield: 1 minute
         digishieldConsensus.nCoinbaseMaturity = 240;
 
-        // Enable AuxPoW at 158100
+        // Blocks 7501+ are AuxPoW
         auxpowConsensus = digishieldConsensus;
-        auxpowConsensus.nHeightEffective = 10;
-        auxpowConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
+        auxpowConsensus.nHeightEffective = 7500;
         auxpowConsensus.fAllowLegacyBlocks = false;
 
-        // Blocks 157500 - 158099 are Digishield with minimum difficulty on all blocks
-        minDifficultyConsensus = auxpowConsensus;
-        minDifficultyConsensus.nHeightEffective = 15;
-        minDifficultyConsensus.fPowAllowDigishieldMinDifficultyBlocks = true;
-        minDifficultyConsensus.fPowAllowMinDifficultyBlocks = true;
-
         // AuxPow2
-        aux2Consensus = minDifficultyConsensus;
-        aux2Consensus.nHeightEffective = 25;
-        aux2Consensus.nAuxpowChainId = 0x0032;
+        aux2Consensus = auxpowConsensus;
+        aux2Consensus.nHeightEffective = 50000; // At 50,000 blocks we switch to new Chain ID of 153
+        aux2Consensus.nAuxpowChainId = 0x0032; // Chain ID of 50
         aux2Consensus.fStrictChainId = true;
         aux2Consensus.fAllowLegacyBlocks = false;
 
-        // Assemble the binary search tree of parameters
-        pConsensusRoot = &digishieldConsensus; // 5
+        // Assemble the binary search tree of consensus parameters
+        pConsensusRoot = &digishieldConsensus; // 5000
         pConsensusRoot->InsertConsensus(&consensus); // 0
-        pConsensusRoot->InsertConsensus(&auxpowConsensus); // 10
-        pConsensusRoot->InsertConsensus(&minDifficultyConsensus); // 15
-        pConsensusRoot->InsertConsensus(&aux2Consensus); // 25
+        pConsensusRoot->InsertConsensus(&auxpowConsensus); // 7500
+        pConsensusRoot->InsertConsensus(&aux2Consensus); // 265000
 
-        pchMessageStart[0] = 0xfc;
-        pchMessageStart[1] = 0xc1;
-        pchMessageStart[2] = 0xb7;
-        pchMessageStart[3] = 0xdc;
+        pchMessageStart[0] = 0xdc;
+        pchMessageStart[1] = 0xb1;
+        pchMessageStart[2] = 0xd7;
+        pchMessageStart[3] = 0xda;
         vAlertPubKey = ParseHex("042756726da3c7ef515d89212ee1705023d14be389e25fe15611585661b9a20021908b2b80a3c7200a0139dd2b26946606aab0eef9aa7689a6dc2c7eee237fa834");
-        nDefaultPort = 44556;
+        nDefaultPort = 43117;
         nPruneAfterHeight = 1000;
 
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.push_back(CDNSSeedData("seed.dingocoin.org", "testseed.dingocoin.org"));
+        vSeeds.push_back(CDNSSeedData("testnet", "209.126.81.147"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,113); // 0x71
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196); // 0xc4
@@ -354,15 +346,15 @@ public:
 
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
-            (  26, uint256S("0x3fce514fc35d0ed13a5cb40c971b0ad8d35e11180f409ac34517f555701032b1"))
-
+            ( 0, uint256S("0x1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691"))
+            ( 1, uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426"))
         };
 
         chainTxData = ChainTxData{
-            // Data as of block a113c41c00934f940a41f99d18b2ad9aefd183a4b7fe80527e1e6c12779bd024 (height 3062910)
-            1613217942, // * UNIX timestamp of last checkpoint block
-            4186373,    // * total number of transactions between genesis and last checkpoint
-            0.05        // * estimated number of transactions per second after that timestamp
+            // Data as of block 0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426 (height 1)
+            1649143273, // * UNIX timestamp of last checkpoint block
+            2,    // * total number of transactions between genesis and last checkpoint
+            0.01        // * estimated number of transactions per second after that timestamp
         };
 
     }

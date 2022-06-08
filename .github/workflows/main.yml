@@ -193,4 +193,3 @@ jobs:
           name: macos-binaries
           path: |
             Dingocoin.dmg
-
