@@ -172,12 +172,6 @@ public:
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
         vSeeds.push_back(CDNSSeedData("australiacash.org", "mint.australiacash.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.com", "209.126.81.147", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed5.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed6.dingocoin.org", true));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,22);
