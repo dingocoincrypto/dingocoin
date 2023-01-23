@@ -118,10 +118,10 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
         // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000005dab0faf78a10a769");
+        consensus.nMinimumChainWork = uint256S("0x000000000000000000000000000000000000000000000008e7233f00f8b5ca53");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0x702a55c389f18479504b220234da885144cbcae9ac05d5880bcfa9713c2697c1"); // 652956
+        consensus.defaultAssumeValid = uint256S("0x7feb22bada667e99b60fc432a28acbc6ed7b769db6c11981c4b1855020bf2d54"); // 883514
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0032}; // All future chain IDs. Used for permissive block header checks.
@@ -172,12 +172,6 @@ public:
         // Note that of those with the service bits flag, most only support a subset of possible options
         vSeeds.push_back(CDNSSeedData("vps.dingocoin.com", "dnsseed.dingocoin.com", true));
         vSeeds.push_back(CDNSSeedData("australiacash.org", "mint.australiacash.org", true));
-        vSeeds.push_back(CDNSSeedData("dingocoin.com", "209.126.81.147", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed2.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed3.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed4.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed5.dingocoin.org", true));
-        // vSeeds.push_back(CDNSSeedData("dingocoin.org", "seed6.dingocoin.org", true));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,30);
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,22);
@@ -210,6 +204,7 @@ public:
             ( 497420, uint256S("0x83c341127a4dfabd720c36e7f3f9d56b35dd1c30b71dc353fa646c014744cc9f"))
             ( 517371, uint256S("0x5cd1462506d2d2637cd190489265b8adec9045d656a65d57f0dbf705fc447b64"))
             ( 651369, uint256S("0xfc192842e08f010334e278ca02e64396458c9f0a284858ae5342db400b09d393"))
+            ( 883514, uint256S("0x7feb22bada667e99b60fc432a28acbc6ed7b769db6c11981c4b1855020bf2d54"))
         };
 
         chainTxData = ChainTxData{
@@ -250,7 +245,7 @@ public:
         consensus.nMajorityWindow = 2000;
         // BIP34 is never enforced in Dingocoin v2 blocks, so we enforce from v3
         consensus.BIP34Height = 1;
-        consensus.BIP34Hash = uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426");
+        consensus.BIP34Hash = uint256S("0x000");
         consensus.BIP65Height = 1;
         consensus.BIP66Height = 1;
         consensus.newMinProtoHeight = 15000;
@@ -279,11 +274,11 @@ public:
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nStartTime = 1651494979; // May 5th, 2022
         consensus.vDeployments[Consensus::DEPLOYMENT_SEGWIT].nTimeout = 0; // Disabled
 
-     // The best chain should have at least this much work.
-        consensus.nMinimumChainWork = uint256S("0x0000000000000000000000000000000000000000000000000000000000200020");
+        // The best chain should have at least this much work.
+        consensus.nMinimumChainWork = uint256S("0x00");
 
         // By default assume that the signatures in ancestors of this block are valid.
-        consensus.defaultAssumeValid = uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426"); // 900,000
+        consensus.defaultAssumeValid = uint256S("0x00"); // 900,000
 
         // AuxPoW parameters
         consensus.nAuxpowChainIds = {0x0062, 0x0099}; // All future chain IDs. Used for permissive block header checks.
@@ -329,7 +324,7 @@ public:
         vFixedSeeds.clear();
         vSeeds.clear();
         // nodes with support for servicebits filtering should be at the top
-        vSeeds.push_back(CDNSSeedData("testnet", "209.126.81.147"));
+        vSeeds.push_back(CDNSSeedData("testnet", "146.19.215.43"));
 
         base58Prefixes[PUBKEY_ADDRESS] = std::vector<unsigned char>(1,113); // 0x71
         base58Prefixes[SCRIPT_ADDRESS] = std::vector<unsigned char>(1,196); // 0xc4
@@ -348,12 +343,11 @@ public:
         checkpointData = (CCheckpointData) {
             boost::assign::map_list_of
             ( 0, uint256S("0x1a91e3dace36e2be3bf030a65679fe821aa1d6ef92e7c9902eb318182c355691"))
-            ( 1, uint256S("0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426"))
         };
 
         chainTxData = ChainTxData{
             // Data as of block 0xad784961be215b7872b0b1b846cd61654f7376866e7978d63fb25076be26f426 (height 1)
-            1649143273, // * UNIX timestamp of last checkpoint block
+            1672759804, // * UNIX timestamp of last checkpoint block
             2,    // * total number of transactions between genesis and last checkpoint
             0.01        // * estimated number of transactions per second after that timestamp
         };
