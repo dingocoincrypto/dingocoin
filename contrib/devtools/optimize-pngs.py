@@ -48,7 +48,7 @@ for folder in folders:
                         [pngcrush, "-brute", "-ow", "-rem", "gAMA", "-rem", "cHRM", "-rem", "iCCP", "-rem", "sRGB", "-rem", "alla", "-rem", "text", file_path],
                         stderr=subprocess.STDOUT).rstrip('\n')
             except:
-                print "pngcrush is not installed, aborting..."
+                print("pngcrush is not installed, aborting...")
                 sys.exit(0)
         
             #verify
@@ -60,14 +60,14 @@ for folder in folders:
             fileMetaMap['contentHashPost'] = content_hash(file_path)
 
             if fileMetaMap['contentHashPre'] != fileMetaMap['contentHashPost']:
-                print "Image contents of PNG file "+file+" before and after crushing don't match"
+                print("Image contents of PNG file "+file+" before and after crushing don't match")
                 sys.exit(1)
 
             fileMetaMap['psize'] = os.path.getsize(file_path)
             outputArray.append(fileMetaMap)
             print("done\n"),
 
-print "summary:\n+++++++++++++++++"
+print("summary:\n+++++++++++++++++")
 for fileDict in outputArray:
     oldHash = fileDict['sha256Old']
     newHash = fileDict['sha256New']
