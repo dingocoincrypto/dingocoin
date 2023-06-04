@@ -1,6 +1,6 @@
 # Dingocoin Core [DINGO, Ð]
 
-![Dingocoin](https://dingocoin.com/assets/img/dingocoin.png)
+![Dingocoin](https://dingocoin.com/img/logos/dingocoin/logo/dingocoin.png)
 
 [![Build Status](https://travis-ci.com/dingocoin/dingocoin.svg?branch=master)](https://travis-ci.com/dingocoin/dingocoin)
 
